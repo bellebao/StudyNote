@@ -19,7 +19,8 @@ def binary_search(find, list1) :
     else :
       low = mid + 1
   #未找到返回-1
-  return -1
+  return -11
+
 
 list1 = [1,2,3,7,8,9,10,5]
 #进行二分查找算法前必须保证要查找的序列时有序的，这里假设是升序列表
