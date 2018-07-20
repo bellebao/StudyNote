@@ -1,0 +1,196 @@
+URL语法
+
+　　URL语法建立在由下面9部分构成的通用格式上。其中，URL最重要的3个部分是方案(scheme)、主机(host)和路径(path)
+
+<scheme>://<user>:<password>@<host>:<port>/<path>:<params>?<query>#<frag>
+
+【scheme】方案
+
+　　scheme实际上是规定如何访问指定资源的主要标识符，它会告诉负责解析URL的应用程序应该使用什么协议
+
+　　scheme组件必须以一个字母符号开始，由第一个“:”符号将其与URL的其余部分分隔开来。scheme名是大小写无关的，因
+  此URL“http://www.hardware.com”和“HTTP://www.hardware.com” 是等价的
+  常见的方案如下
+
+1、HTTP
+
+　　HTTP是一种超文本传输协议方案，除了没有用户名和密码之外，与通用的URL格式相符。如果省略了端口，就默认为80
+
+　　基本格式：
+
+http://<host>:<port>/<path>?<query>#<frag>
+
+　　示例：
+
+http://www.hardware.com/index.html
+http://www.hardware.com:80/index.html
+
+2、https
+
+　　方案https与方案http是一对。唯一的区别在于方案https使用了网景的SSL， SSL为HTTP连接提供了端到端的加密机制。其语法与HTTP的语法相同，默认端口为443
+
+　　基本格式：
+
+https://<host>:<port>/<path>?<query>#<frag>
+
+　　示例：
+
+https://www.hardware.com/secure.html
+
+3、Mailto 
+
+　　Mailto URL指向的是E-mail地址。由于E-mail的行为与其他方案都有所不同(它并不指向任何可以直接访问的对象)，所以mailto URL的格式与标准URL的格式也有所不同
+
+　　示例：
+
+mailto:joe@hardware.com
+
+4、ftp
+
+　　文件传输协议URL可以用来从FTP服务器上下载或向其上传文件，并获取FTP服务器上的目录结构内容的列表
+
+　　在Web和URL出现之前，FTP就已经存在了。Web应用程序将FTP作为一种数据访问方案使用
+
+　　基本格式：
+
+ftp://<user>:<password>@<host>:<port>/<path>;<params>
+
+　　示例：
+
+ftp://anonymous:joe%40hardware.com@prep.ai.mit.edu:21/pub/gnu/
+
+5、rtsp,rtspu
+
+　　RTSP URL是可以通过实时流传输协议(Real Time Streaming Protocol)解析的音/视频媒体资源的标识符
+
+　　方案rtspu中的u表示它是使用UDP协议来获取资源的
+
+　　基本格式：
+
+rtsp://<user>:<password>@<host>:<port>/<path>
+rtspu://<user>:<password>@<host>:<port>/<path>
+
+　　示例：
+
+rtsp://www.hardware.com:554/interview/cto_video
+
+6、file
+
+　　方案file表示一台指定主机(通过本地磁盘、网络文件系统或其他一些文件共享系统)上可直接访问的文件。各字段都遵循通用格式。如果省略了主机名，就默认为正在使用URL的本地主机
+
+　　基本格式：
+
+file ://<host>/<path>
+
+　　示例：
+
+file://OFFICE-FS/policies/casual-fridays.doc
+
+7、telnet
+
+　　方案telnet用于访问交互式业务。它表示的不是对象自身，而是可通过telnet协议访问的交互式应用程序(资源)
+
+　　基本格式：
+
+telnet://<user>:<password>@<host>:<port>/
+
+　　示例：
+
+telnet://slurp:webhound@joes-hardware.com:23/
+
+主机和端口】
+
+　　要想在因特网上找到资源，应用程序要知道是哪台机器装载了资源，以及在那台机器的什么地方可以找到能对目标资源进行访问的服务器。URL的主机和端口组件提供了这两组信息
+
+　　主机组件标识了因特网上能够访问资源的宿主机器。可以用上述主机名(www.hardware.com)或者IP地址来表示主机名
+
+　　[注意]IP地址可以是192.168.1.1这类IPv4地址名，还可以是[0:0:0:0:0:0:0:1]这样用括号括起来的IPv6地址名
+
+　　比如，下面两个URL就指向同一个资源——第一个URL通过主机名，第二个通过IP地址指向服务器：
+
+http://www.hardware.com:80/index.html 
+http://161.58.228.45:80/index.html
+
+　　端口组件标识了服务器正在监听的网络端口。对下层使用了TCP协议的HTTP来说，默认端口号为80
+
+【用户名和密码】
+
+　　很多服务器都要求输入用户名和密码才会允许用户访问数据。FTP服务器就是这样一个常见的实例
+
+ftp://ftp.prep.ai.mit.edu/pub/gnu
+ftp://anonymous@ftp.prep.ai.mit.edu/pub/gnu
+ftp://anonymous:my_passwd@ftp.prep.ai.mit.edu/pub/gnu 
+http://joe:joespasswd@www.joes-hardware.com/sales_info.txt
+
+　　第一个例子没有用户或密码组件，只有标准的方案、主机和路径。如果某应用程序使用的URL方案要求输入用户名和密码，比如FTP，但用户没有提供，它通常会插入一个默认的用户名和密码。比如，如果向浏览器提供一个FTP URL，但没有指定用户名和密码，它就会插入anonymous(匿名用户)作为你的用户名，并发送一个默认的密码(IE会发送IEUser)
+
+　　第二个例子显示了一个指定为anonymous的用户名。这个用户名与主机组件组合在一起，看起来就像E-mail地址一样。字符将用户和密码组件与URL的其余部分分隔开来
+
+　　在第三个例子中，指定了用户名(anonymous)和密码(my_passwd)，两者之间由字符“:”分隔
+
+【路径】
+
+　　URL的路径组件说明了资源位于服务器的什么地方。路径通常很像一个分级的文件系统路径
+
+http://www.hardware.com:80/seasonal/index-fall.html 
+
+　　这个URL中的路径为/seasonal/index-fall.html，很像UNIX文件系统中的文件系统路径。路径是服务器定位资源时所需的信息。可以用字符“/”将HTTP URL的路径组件划分成一些路径段(path segment)，每个路径段都有自己的参数(param)组件
+
+【参数】
+
+　　对很多方案来说，只有简单的主机名和到达对象的路径是不够的。除了服务器正在监听的端口，以及是否能够通过用户名和密码访问资源外，很多协议都还需要更多的信息才能工作
+
+　　负责解析URL的应用程序需要这些协议参数来访问资源。否则，另一端的服务器可能就不会为请求提供服务，或者更糟糕的是，提供错误的服务。比如，像FTP这样的协议，有两种传输模式：二进制和文本形式。肯定不希望以文本形式来传送二进制图片，这样的话，二进制图片可能会变得一团糟
+
+　　为了向应用程序提供它们所需的输入参数，以便正确地与服务器进行交互，URL中有一个参数组件。这个组件就是URL中的名值对列表，由字符“;”将其与URL的其余部分(以及各名值对)分隔开来。它们为应用程序提供了访问资源所需的所有附加信息。比如：
+
+ftp://prep.ai.mit.edu/pub/gnu;type=d
+
+　　在这个例子中，有一个参数type=d，参数名为type，值为d
+
+　　如前所述，HTTP URL的路径组件可以分成若干路径段。每段都可以有自己的参数。比如：
+
+http://www.hardware.com/hammers;sale=false/index.html;graphics=true
+
+　　这个例子就有两个路径段，hammers和index.html。hammers路径段有参数sale，其值为false。index.html段有参数graphics，其值为true
+  
+  【查询字符串】
+
+　　很多资源，比如数据库服务，都是可以通过提问题或进行査询来缩小所请求资源类型范围的。假设数据库中维护着一个未售货物的清单，并可以对淸单进行査询，以判断产品是否有货，那就可以用下列URL来査询Web数据库网关，看看编号为12731、颜色为blue、尺寸为large的条目是否有货：
+
+http://www.hardware.com/inventory-check.cgi?item=12731&color=blue&size=large
+
+　　这个URL的大部分都与我们见过的其他URL类似。只有问号(?)右边的内容是新出现的。这部分被称为查询(query)组件。URL的査询组件和标识网关资源的URL路径组件一起被发送给网关资源
+
+　　除了有些不合规则的字符需要特别处理之外，对査询组件的格式没什么要求。按照常规，很多网关都希望査询字符串以一系列“名/值”对的形式出现，名值对之间用字符“&”分隔
+
+【片段】
+
+　　有些资源类型，比如HTML，除了资源级之外，还可以做进一步的划分。比如，对一个带有章节的大型文本文档来说，资源的URL会指向整个文本文档，但理想的情况是，能够指定资源中的那些章节
+
+　　为了引用部分资源或资源的一个片段，URL支持使用片段(frag)组件来表示一个资源内部的片段。比如，URL可以指向HTML文档中一个特定的图片或小节
+
+　　片段挂在URL的右手边，最前面有一个字符“#”。比如：
+
+http://www.hardware.com/tools.html#drills
+
+　　在这个例子中，片段drills引用了Web服务器上页面/tools.html中的一个部分。这部分的名字叫做drills
+
+　　HTTP服务器通常只处理整个对象，而不是对象的片段，客户端不能将片段传送给服务器。浏览器从服务器获得了整个资源之后，会根据片段来显示感兴趣的那部分资源
+  
+  【字符]
+  
+  URL的设计者们认识到有时人们可能会希望URL中包含除通用的安全字母表之外的二进制数据或字符。因此，需要有一种转义机制，能够将不安全的字符编码为安全字符，再进行传输
+
+　　人们设计了一种编码机制，用来在URL中表示各种不安全的字符。这种编码机制就是通过一种“转义”表示法来表示不安全字符的，这种转义表示法包含一个百分号(%)，后面跟着两个表示字符ASCII码的十六进制数
+字符  ascii
+~      0x7e
+space  0x20
+%      0x25
+
+
+　　在URL中，有几个字符被保留起来，有着特殊的含义。有些字符不在定义的US- ASCII可打印字符集中。还有些字符会与某些因特网网关和协议产生混淆，因此不赞成使用
+
+
+
+
